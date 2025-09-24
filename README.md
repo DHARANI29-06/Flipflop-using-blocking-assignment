@@ -28,6 +28,7 @@ Blocking assignments execute sequentially in the given order, which makes it eas
 
 ### SR Flip-Flop (Blocking)
 ```verilog
+`timescale 1ns/1ps
 module SRFF(s,r,clk,rst,q);
 input s,r,clk,rst;
 output reg q;
@@ -35,17 +36,18 @@ always @(posedge clk)
 begin
     if(rst==1)
         q=0;
-    else if(rst==1)
-        q=q;
     else if(s==0 && r==0)
-        q=1'b0;
+        q=q;
     else if(s==0 && r==1)
+        q=1'b0;
+    else if(s==1 && r==0)
         q=1'b1;
     else 
         q=1'bx; 
         
 end       
 endmodule
+
 ```
 ### SR Flip-Flop Test bench 
 ```verilog
@@ -63,7 +65,7 @@ clk=0;s=0;r=0;rst=1;
 #10 s=1;r=1;
 #10 s=0;r=0;
 #20 $finish;
-end 
+end 
 endmodule
 ```
 #### SIMULATION OUTPUT
